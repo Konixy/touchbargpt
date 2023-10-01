@@ -62,7 +62,7 @@ function resolveItem(item: Item) {
 function resolveTouchBar() {
   const items: (Electron.TouchBarPopover | Electron.TouchBarButton)[] = [
     new TouchBar.TouchBarButton({
-      icon: "./close-icon.png",
+      icon: "./app/close-icon.png",
       iconPosition: "overlay",
       click() {
         app.quit();

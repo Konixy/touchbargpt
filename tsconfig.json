@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "noImplicitAny": false,
-    "outDir": "dist",
+    "outDir": "app",
     "removeComments": true
   }
 }

@@ -1,10 +1,12 @@
 {
-  "name": "electron-quick-start",
+  "name": "custom-touchbar",
   "version": "1.0.0",
   "description": "A minimal Electron application",
-  "main": "dist/main.js",
+  "main": "app/main.js",
   "scripts": {
-    "start": "tsc && electron ."
+    "start": "tsc && electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "tsc && cp close-icon.png app && electron-builder build"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -17,6 +19,7 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^26.2.3"
+    "electron": "^26.2.3",
+    "electron-builder": "^24.6.4"
   }
 }
