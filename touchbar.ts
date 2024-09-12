@@ -16,8 +16,9 @@ function addToContext(win: BrowserWindow) {
   refreshTouchBar(win);
 }
 
-function setPrompt() {
+function setPrompt(win) {
   prompt = clipboard.readText();
+  refreshTouchBar(win);
 }
 
 export function loading(win: BrowserWindow) {
@@ -31,60 +32,77 @@ export function loading(win: BrowserWindow) {
 export function createTouchbar(win: BrowserWindow): TouchBarConstructorOptions {
   const addToContextButton = new TouchBar.TouchBarButton({
     click: () => addToContext(win),
-    label: "Add to context",
+    label: "Add",
   });
 
-  const clearContextButton = new TouchBar.TouchBarButton({
+  const clearButton = new TouchBar.TouchBarButton({
     click() {
       context = [];
+      prompt = "";
       refreshTouchBar(win);
     },
-    label: "Clear context",
+    label: "Clear",
+    enabled: context.length > 0 || prompt !== "",
   });
 
   const setPromptButton = new TouchBar.TouchBarButton({
-    click: setPrompt,
+    click: () => setPrompt(win),
     label: "Set prompt",
   });
 
-  const askAIButton = new TouchBar.TouchBarButton({
-    click: () => askAI(prompt, context, win),
+  const askAIButton = new TouchBar.TouchBarPopover({
     label: "Ask",
+    showCloseButton: true,
+    items: new TouchBar({
+      items: [
+        new TouchBar.TouchBarSpacer({ size: "flexible" }),
+        new TouchBar.TouchBarButton({
+          label: "Normal response",
+          enabled: prompt !== "",
+          click: () => askAI(prompt, context, false, win),
+        }),
+        new TouchBar.TouchBarButton({
+          label: "Short response",
+          enabled: prompt !== "",
+          click: () => askAI(prompt, context, true, win),
+        }),
+        new TouchBar.TouchBarSpacer({ size: "flexible" }),
+      ],
+    }),
   });
 
-  const loadLastPromptButton = new TouchBar.TouchBarButton({
-    click() {
-      const lastPromptData = fs.readFileSync("./last-prompt.json", "utf-8");
-      const lastPrompt = JSON.parse(lastPromptData);
-      context = lastPrompt.context;
-      prompt = lastPrompt.prompt;
+  // DEV ONLY
 
-      refreshTouchBar(win);
-    },
-    label: "Load last prompt",
-  });
+  // const loadLastPromptButton = new TouchBar.TouchBarButton({
+  //   click() {
+  //     try {
+  //       const lastPromptData = fs.readFileSync("./last-prompt.json", "utf-8");
+  //       const lastPrompt = JSON.parse(lastPromptData);
+  //       context = lastPrompt.context;
+  //       prompt = lastPrompt.prompt;
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
 
-  // const showContextButton = new TouchBar.TouchBarPopover({
-  //   showCloseButton: true,
-  //   label: "Show context",
-  //   items: new TouchBar({
-  //     items: context.map(
-  //       (c) => new TouchBar.TouchBarLabel({ label: c, textColor: "#fff" })
-  //     ),
-  //   }),
+  //     refreshTouchBar(win);
+  //   },
+  //   label: "Load last prompt",
   // });
+
   return {
     items: [
       new TouchBar.TouchBarLabel({
         label: `${context.length} context${context.length > 1 ? "s" : ""}`,
       }),
+      new TouchBar.TouchBarSpacer({ size: "flexible" }),
       addToContextButton,
-      clearContextButton,
+      clearButton,
       setPromptButton,
-      loadLastPromptButton,
-      askAIButton,
+      // loadLastPromptButton,
+      new TouchBar.TouchBarSpacer({ size: "flexible" }),
+      prompt && prompt !== ""
+        ? askAIButton
+        : new TouchBar.TouchBarButton({ label: "Ask", enabled: false }),
     ],
   };
 }
-
-// Give me 5 names that i can give to my baby

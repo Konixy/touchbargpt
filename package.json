@@ -7,7 +7,7 @@
     "dev": "nodemon --exec 'npm start' -e ts",
     "start": "tsc && electron .",
     "postinstall": "electron-builder install-app-deps",
-    "build": "tsc && cp close-icon.png app && rm -rf dist && electron-builder build"
+    "build": "tsc && rm -rf dist && electron-builder build"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -20,11 +20,10 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^32.0.2",
-    "electron-builder": "^25.0.5"
+    "electron": "^32.1.0",
+    "electron-builder": "^25.0.6"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "openai": "^4.58.2"
+    "openai": "^4.60.0"
   }
 }

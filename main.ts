@@ -23,15 +23,7 @@ app.whenReady().then(() => {
 });
 
 export function refreshTouchBar(win: BrowserWindow) {
-  win.setTouchBar(
-    new TouchBar({
-      items: [
-        new TouchBar.TouchBarGroup({
-          items: new TouchBar(createTouchbar(win)),
-        }),
-      ],
-    })
-  );
+  win.setTouchBar(new TouchBar(createTouchbar(win)));
 }
 
 app.on("window-all-closed", function () {

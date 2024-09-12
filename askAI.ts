@@ -1,18 +1,20 @@
 import OpenAI from "openai";
-import dotenv from "dotenv";
 import fs from "fs";
 import { loading } from "./touchbar";
 import { clipboard, TouchBar } from "electron";
 import { refreshTouchBar } from "./main";
-dotenv.config();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+import { apiKey } from "./api-key.json";
+const openai = new OpenAI({ apiKey });
 
 export default async function askAI(
   prompt: string,
   context: string[],
+  shortResponse: boolean,
   win: Electron.BrowserWindow
 ) {
-  fs.writeFileSync("./last-prompt.json", JSON.stringify({ prompt, context }));
+  // DEV ONLY
+
+  // fs.writeFileSync("./last-prompt.json", JSON.stringify({ prompt, context }));
 
   const promptContent = `La question est : ${prompt}${
     context.length > 0
@@ -29,8 +31,11 @@ export default async function askAI(
     messages: [
       {
         role: "system",
-        content:
-          "Tu est un professeur de lycée, et un élève. Provide response as minimal as possible and in juste one sentence.",
+        content: `Tu est un professeur de lycée, et un élève te pose une question par rapport a la matière que tu enseigne.${
+          shortResponse
+            ? " Répond a cette question en une phrase seulement et en allant droit au but."
+            : " Répond a cette question en allant droit au but."
+        }`,
       },
       {
         role: "user",
@@ -39,19 +44,12 @@ export default async function askAI(
     ],
   });
 
-  // const delay = new Promise((resolve) =>
-  //   setTimeout(() => {
-  //     resolve(null);
-  //   }, 1000)
-  // );
-
-  // await delay;
-
   console.log(completion);
 
   win.setTouchBar(
     new TouchBar({
       items: [
+        new TouchBar.TouchBarSpacer({ size: "flexible" }),
         new TouchBar.TouchBarButton({
           label: "Go back to main menu",
           click() {
@@ -64,6 +62,7 @@ export default async function askAI(
             clipboard.writeText(completion.choices[0].message.content || "");
           },
         }),
+        new TouchBar.TouchBarSpacer({ size: "flexible" }),
       ],
     })
   );
