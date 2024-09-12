@@ -2,3 +2,5 @@ node_modules
 dist
 app
 touchbar.json
+.env
+.DS_Store
