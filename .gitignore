@@ -4,3 +4,4 @@ app
 touchbar.json
 .env
 .DS_Store
+last-prompt.json
