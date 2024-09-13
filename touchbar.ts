@@ -32,7 +32,7 @@ export function loading(win: BrowserWindow) {
 export function createTouchbar(win: BrowserWindow): TouchBarConstructorOptions {
   const addToContextButton = new TouchBar.TouchBarButton({
     click: () => addToContext(win),
-    label: "Add",
+    label: "Add context",
   });
 
   const clearButton = new TouchBar.TouchBarButton({
@@ -41,7 +41,7 @@ export function createTouchbar(win: BrowserWindow): TouchBarConstructorOptions {
       prompt = "";
       refreshTouchBar(win);
     },
-    label: "Clear",
+    label: "Clear all",
     enabled: context.length > 0 || prompt !== "",
   });
 
@@ -96,8 +96,8 @@ export function createTouchbar(win: BrowserWindow): TouchBarConstructorOptions {
       }),
       new TouchBar.TouchBarSpacer({ size: "flexible" }),
       addToContextButton,
-      clearButton,
       setPromptButton,
+      clearButton,
       // loadLastPromptButton,
       new TouchBar.TouchBarSpacer({ size: "flexible" }),
       prompt && prompt !== ""

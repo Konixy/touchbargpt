@@ -31,7 +31,7 @@ export default async function askAI(
     messages: [
       {
         role: "system",
-        content: `Tu est un professeur de lycée, et un élève te pose une question par rapport a la matière que tu enseigne.${
+        content: `Tu est un élève de terminale au lycée, tu dois répondre a une question lors d'une évaluation.${
           shortResponse
             ? " Répond a cette question en une phrase seulement et en allant droit au but."
             : " Répond a cette question en allant droit au but."
