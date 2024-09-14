@@ -1,7 +1,6 @@
 node_modules
 dist
 app
-touchbar.json
 api-key.json
 .DS_Store
 last-prompt.json
