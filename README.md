@@ -27,6 +27,7 @@ Don't forget to enter your openai api key in `api-key.json` like this :
 ```
 
 Finally, build the project by doing `npm run build`
+You can find the compiled app in `dist/mac/Word.app`
 
 ## Usage
 
