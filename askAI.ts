@@ -35,7 +35,7 @@ export default async function askAI(
           shortResponse
             ? " Répond a cette question en une phrase seulement et en allant droit au but."
             : " Répond a cette question en allant droit au but."
-        }`,
+        } N'utilise pas markdown pour cette réponse.`,
       },
       {
         role: "user",
